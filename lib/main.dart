@@ -22,5 +22,7 @@ void main() async {
         ),
 
       ],
-      child:  AmirChatApp()));
+      child:  MaterialApp(
+           home: AmirChatApp(),
+      )));
 }

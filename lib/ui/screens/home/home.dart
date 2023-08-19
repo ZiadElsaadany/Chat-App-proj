@@ -8,94 +8,134 @@ class AmirChatApp extends StatelessWidget {
    AmirChatApp({Key? key}) : super(key: key);
 
 
+
+  @override
+  Widget build(BuildContext context) {
+
+
+    return Home();
+
+  }
+}
+
+class Home extends StatefulWidget {
+   Home({Key? key}) : super(key: key);
+
+  @override
+  State<Home> createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> {
+  @override
+  void initState() {
+    super.initState();
+    Future.delayed(Duration.zero, () async {
+      Provider.of<ChatProvider>(context, listen: false).getMyData();
+    });
+  }
   final keyScaffold  = GlobalKey<ScaffoldState>() ;
 
   @override
   Widget build(BuildContext context) {
-
-    final myDataCubit= context.read<ChatProvider>()..getMyData();
+    final myDataCubit= context.read<ChatProvider>();
 
     return Scaffold(
-      key: keyScaffold,
-      drawer: Drawer(
-        child: Provider.of<ChatProvider>(context).getMyDataState ==States.loading? const CircularProgressIndicator() : Column(
-          children: [
-            if(myDataCubit.userChat!=null)
+    key: keyScaffold,
+    drawer: Drawer(
+      child: Provider.of<ChatProvider>(context).getMyDataState ==States.loading? const Center(child: CircularProgressIndicator(
+        color:  Colors.yellow,
 
-              UserAccountsDrawerHeader(
-                  currentAccountPicture: CircleAvatar(
-                    radius: 40,
-                    backgroundImage: NetworkImage( myDataCubit.userChat!.photoUrl,
+      )) : Column(
+        children: [
+          if(myDataCubit.userChat!=null)
+
+            UserAccountsDrawerHeader(
+                currentAccountPicture: CircleAvatar(
+                  radius: 40,
+                  backgroundImage: NetworkImage( myDataCubit.userChat!.photoUrl,
                   ),),
-                  accountName:Text(myDataCubit.userChat!.name),
-                  accountEmail: Text(myDataCubit.userChat!.email)
-              ),
-
-
-
-          ],
-        ),
+                accountName:Text(myDataCubit.userChat!.name),
+                accountEmail: Text(myDataCubit.userChat!.email)
+            ),
+        ],
       ),
-      appBar: AppBar(
-          elevation: 0,
-          actions: [
+    ),
+    appBar: AppBar(
+        elevation: 0,
+        actions: [
           IconButton(onPressed: ( ) {
-    myDataCubit.changeSearchEnabled();
-    } , icon:
-    Icon(
-        myDataCubit.searchEnabled?
-        Icons.clear:Icons.search)
-    )],
-          automaticallyImplyLeading: false,
-          title:    myDataCubit.searchEnabled?
+            Provider.of<ChatProvider>(context,listen: false).changeSearchEnabled();
+          } , icon:
+          Icon(
+              myDataCubit.searchEnabled?
+              Icons.clear:Icons.search)
+          )],
+        automaticallyImplyLeading: false,
+        title:    myDataCubit.searchEnabled?
 
-      TextField(
-      onChanged: (q) {
-    myDataCubit.searchAboutUser(q: q.trim());
-    } ,
-      style: TextStyle(
-          color: Colors.white
-      ),
-      decoration: InputDecoration(
-          border: InputBorder.none,
-          hintText: "Search about user........",
-          hintStyle: TextStyle(
+        TextField(
+          onChanged: (q) {
+            Provider.of<ChatProvider>(context,listen: false).searchAboutUser(q: q.trim());
+          } ,
+          style: const TextStyle(
               color: Colors.white
-          )
-      ),
-    ) :GestureDetector(
+          ),
+          decoration: const InputDecoration(
+              border: InputBorder.none,
+              hintText: "Search about user........",
+              hintStyle: TextStyle(
+                  color: Colors.white
+              )
+          ),
+        ) :GestureDetector(
 
-    onTap: ( ) {
-    keyScaffold.currentState!.openDrawer();
-    } ,
-    child: Text("Users Screen")
-          )
-      ),
-      body: const HomeBody(),
-    );
+            onTap: ( ) {
+              keyScaffold.currentState!.openDrawer();
+            } ,
+            child: Text("Users Screen")
+        )
+    ),
+    body: const HomeBody(),
+  );
   }
 }
 
-class HomeBody extends StatelessWidget {
+
+class HomeBody extends StatefulWidget {
   const HomeBody({Key? key}) : super(key: key);
 
   @override
+  State<HomeBody> createState() => _HomeBodyState();
+}
+
+class _HomeBodyState extends State<HomeBody> {
+  @override
+  void initState() {
+    super.initState();
+    Future.delayed(Duration.zero, () async {
+      Provider.of<ChatProvider>(context, listen: false).getUsers();
+    });
+  }
+  @override
   Widget build(BuildContext context) {
-    final userProv= context.read<ChatProvider>()..getUsers();
+    final userProv= context.read<ChatProvider>();
     return      Provider.of<ChatProvider>(context).usersState == States.loading ?
-        CircularProgressIndicator()
+        const Center(child: CircularProgressIndicator(
+          color: Colors.yellow,
+
+        ))
         :    ListView.builder(
-        itemCount: userProv.filteredUsers.isEmpty?
+        itemCount:userProv.filteredUsers==[] || userProv.filteredUsers.isEmpty?
         userProv.users.length:userProv.filteredUsers.length,
         itemBuilder: (ctx,index) {
 
           return ListTile(
             title: Text (
-                userProv.filteredUsers.isNotEmpty?
+                userProv.filteredUsers==[] ||  userProv.filteredUsers.isNotEmpty?
                 userProv.filteredUsers[index].name:userProv.users[index].name),
             leading:CircleAvatar(
               backgroundImage:  NetworkImage(
-                userProv.filteredUsers.isNotEmpty?
+                userProv.filteredUsers==[] ||    userProv.filteredUsers.isNotEmpty?
                 userProv.filteredUsers[index].photoUrl:
                 userProv.users[index].photoUrl,
               ),

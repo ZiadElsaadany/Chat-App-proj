@@ -74,12 +74,13 @@ UserChat ?  userChat;
         required String q
       }
       )  {
+    debugPrint(users.toString());
     filteredUsers =   users.where((element)   {
       return       element.name.contains(q);
     }).toList();
 
-
-
+    notifyListeners(); 
+    debugPrint(filteredUsers.toString());
 
   }
 
