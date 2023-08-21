@@ -44,6 +44,8 @@ class _ChatScreenState extends State<ChatScreen> {
     });
   }
 
+
+  var audioPlayer = AudioPlayer();
   final TextEditingController messageController = TextEditingController();
 
   File? imageFile;
@@ -186,16 +188,13 @@ class _ChatScreenState extends State<ChatScreen> {
                       ),
                       GestureDetector(
                           onLongPress: () async {
-                            // var audioPlayer = AudioPlayer();
-                            // await audioPlayer.play(AssetSource("Notification.mp3"));
-                            // audioPlayer.onPlayerComplete.listen((a) {
-                            //   audioController.start.value = DateTime.now();
-                            //   startRecord();
-                            //   audioController.isRecording.value = true;
-                            // });
+
+
                           },
                           onLongPressEnd: (details) {
                             // stopRecord();
+
+                            // audioPlayer.star;
                           },
                           child: const Icon(Icons.mic)),
                       const SizedBox(
@@ -249,9 +248,9 @@ class _ChatScreenState extends State<ChatScreen> {
                             Colors.transparent,
                           ),
                         ),
-                        onPressed: () async {
+                        onPressed: ()  {
                           if (messageController.text.isNotEmpty) {
-                            await provider
+                             provider
                                 .sendMessage(
                               MessageModel(
                                 message: messageController.text,
