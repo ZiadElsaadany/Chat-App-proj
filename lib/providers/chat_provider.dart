@@ -241,14 +241,14 @@ class ChatProvider extends ChangeNotifier {
     chatEmoji= b ;
     notifyListeners();
   }
-  void startRecord() async {
-    bool hasPermission = await checkPermission();
-    if (hasPermission) {
-      recordFilePath = await getFilePath();
-      RecordMp3.instance.start(recordFilePath, (type) {
-        setState(() {});
-      });
-    } else {}
-    setState(() {});
-  }
+  // void startRecord() async {
+  //   bool hasPermission = await checkPermission();
+  //   if (hasPermission) {
+  //     recordFilePath = await getFilePath();
+  //     RecordMp3.instance.start(recordFilePath, (type) {
+  //       setState(() {});
+  //     });
+  //   } else {}
+  //   setState(() {});
+  // }
 }
