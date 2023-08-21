@@ -1,8 +1,11 @@
 import 'package:amir_chhat_app/core/extension/size_extension.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../model/message_model.dart';
+import '../show_image_screen.dart';
 
 class OtherMessageItemWidget extends StatelessWidget {
   const OtherMessageItemWidget({
@@ -31,7 +34,30 @@ class OtherMessageItemWidget extends StatelessWidget {
             bottomEnd: Radius.circular(10),
           ),
         ),
-        child: Text(
+        child:  model.type == MessageType.image ? Container(
+          height: 25.appHeight(context),
+          width: 100.appWidth(context),
+          padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+
+          child: InkWell(
+            onTap: () => Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (_) => ShowImage(
+                  imageUrl:model.message,
+                ),
+              ),
+            ),
+            child: Container(
+              alignment: Alignment.centerRight,
+              height: 25.appHeight(context),
+              width: 100.appWidth(context)/2,
+              decoration: BoxDecoration(border: Border.all()),
+              child:model.message != ""
+                  ? CachedNetworkImage(imageUrl: model.message)
+                  : const CircularProgressIndicator(),
+            ),
+          ),
+        )  :  Text(
           model.message,
           style: const TextStyle(
             color: AppColors.blackColor,

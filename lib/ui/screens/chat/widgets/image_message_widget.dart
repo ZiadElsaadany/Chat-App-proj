@@ -1,15 +1,11 @@
 // import 'dart:io';
 //
-// import 'package:cached_network_image/cached_network_image.dart';
+// import 'package:amir_chhat_app/core/extension/size_extension.dart';
 // import 'package:flutter/material.dart';
 // import 'package:provider/provider.dart';
-// import '../../../core/extension/size_extension.dart';
-// import '../../../core/utils/app_constants.dart';
-// import '../../../models/message_model.dart';
 //
-// import '../../../core/utils/app_colors.dart';
-// import '../../../core/utils/app_images.dart';
-// import '../../../providers/profile_provider.dart';
+// import '../../../../model/message_model.dart';
+//
 //
 // class ImageMessageWidget extends StatelessWidget {
 //   const ImageMessageWidget({

@@ -32,15 +32,15 @@ class _ChatOverviewScreenState extends State<ChatOverviewScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Consumer<ChatProvider>(builder: (context, provider, _) {
-        // provider.chatsList.add(MessageModel(
-        //     message: "ziad",
-        //     date: "11111",
-        //     image: "http://dobyisfree-001-site1.htempurl.com/uploads/My dream  20230428_135921.jpg",
-        //     name: "ahmed",
-        //     unReadCount: 3,
-        //     type: MessageType.text,
-        //     id: "6F5WmtO2Ryb00n9xWOXT"
-        // ));
+        provider.chatsList.add(MessageModel(
+            message: "ziad",
+            date: "11111",
+            image: "https://firebasestorage.googleapis.com/v0/b/amir-chat-16dd2.appspot.com/o/images%2F05e94ec0-400e-11ee-b6ae-233fd0051ce7.jpg?alt=media&token=f11de607-a534-4c78-8d7b-90e1c8d76f49",
+            name: "ahmed",
+            unReadCount: 3,
+            type: MessageType.text,
+            id: "6F5WmtO2Ryb00n9xWOXT"
+        ));
         return Padding(
           padding: const EdgeInsets.symmetric(
             horizontal: 20,

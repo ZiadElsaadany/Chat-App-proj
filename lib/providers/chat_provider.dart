@@ -115,7 +115,7 @@ class ChatProvider extends ChangeNotifier {
         SendMessageModel(
           message: model.message,
           date: DateTime.now().toIso8601String(),
-          type: MessageType.text,
+          type:model.type== MessageType.image?  MessageType.image:   MessageType.text,
           id: userModel.id,
         ).toJson(),
       );
@@ -237,6 +237,5 @@ class ChatProvider extends ChangeNotifier {
   bool chatEmoji = false;
   changeChatEmojiPicker(bool b)  {
     chatEmoji= b ;
-    notifyListeners();
   }
 }
