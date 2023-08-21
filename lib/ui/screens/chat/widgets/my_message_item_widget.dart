@@ -1,5 +1,7 @@
 import 'package:amir_chhat_app/core/extension/size_extension.dart';
+import 'package:amir_chhat_app/ui/screens/chat/widgets/voice_message_widget.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../core/constants/app_colors.dart';
@@ -55,14 +57,28 @@ final MessageModel model;
             ),
           ),
         )
-            :  Text(
+            :  model.type ==MessageType.audio?
+        VoiceMessageWidget(messageModel: model,)
+            : Container(
+          padding: EdgeInsets.all(10),
+          decoration: BoxDecoration (
+            borderRadius: BorderRadiusDirectional.only(
+                bottomEnd:   Radius.circular(12),
+            bottomStart:Radius.circular(12)  ,
+              topEnd:  Radius.circular(0) ,
+               topStart:Radius.circular(15)
+            ),
+            color: AppColors.blueColor1
+          ),
+              child: Text(
           model.message,
           style:const TextStyle(
-            color: AppColors.whiteColor,
-            fontSize: 12,
-            fontWeight: FontWeight.w600,
+              color: AppColors.whiteColor,
+              fontSize: 12,
+              fontWeight: FontWeight.w600,
           ),
         ),
+            ),
       ),
     );
   }

@@ -115,7 +115,9 @@ class ChatProvider extends ChangeNotifier {
         SendMessageModel(
           message: model.message,
           date: DateTime.now().toIso8601String(),
-          type:model.type== MessageType.image?  MessageType.image:   MessageType.text,
+          type:model.type== MessageType.image?  MessageType.image:
+          model.type ==MessageType.audio ? MessageType.audio :
+          MessageType.text,
           id: userModel.id,
         ).toJson(),
       );
@@ -237,5 +239,16 @@ class ChatProvider extends ChangeNotifier {
   bool chatEmoji = false;
   changeChatEmojiPicker(bool b)  {
     chatEmoji= b ;
+    notifyListeners();
+  }
+  void startRecord() async {
+    bool hasPermission = await checkPermission();
+    if (hasPermission) {
+      recordFilePath = await getFilePath();
+      RecordMp3.instance.start(recordFilePath, (type) {
+        setState(() {});
+      });
+    } else {}
+    setState(() {});
   }
 }

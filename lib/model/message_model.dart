@@ -27,7 +27,9 @@ class MessageModel {
     json["type"] == "text" ?
     MessageType.text:
     json["type"] == "image"?
-    MessageType.image :   MessageType.text;
+    MessageType.image :
+    json["type"] == "audio"?
+    MessageType.audio:MessageType.text;
     name = json['name']??'';
     id = json['id']??'';
   }
@@ -40,7 +42,7 @@ class MessageModel {
       'unReadCount':unReadCount,
       'date':date,
       'image':image,
-      'type':type!.name,
+      'type':type.name,
     };
   }
 
@@ -49,4 +51,5 @@ class MessageModel {
 enum MessageType{
   text,
   image,
+  audio
 }
