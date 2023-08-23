@@ -1,4 +1,6 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
+import 'package:record/record.dart';
 
 import '../../../../core/helper/app_helper.dart';
 import '../../../../model/message_model.dart';
@@ -8,14 +10,19 @@ import 'other_message_item_widget.dart';
 class TextMessageWidget extends StatelessWidget {
   const TextMessageWidget({
     Key? key,
-    required this.model,
+    required this.model, required this.audioPlayer, required this.record,
   }) : super(key: key);
   final MessageModel model;
+  final AudioPlayer audioPlayer;
+  final Record record;
 
   @override
   Widget build(BuildContext context) {
     return model.id == AppHelper.getUserId()
         ? MyMessageItemWidget(
+      record: record,
+      audioPlayer: audioPlayer,
+
             model: model,
           )
         : OtherMessageItemWidget(

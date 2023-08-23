@@ -47,8 +47,15 @@ class _MyMessageWidgetState extends State<MyMessageWidget> {
   Duration position = Duration.zero;
 
   @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    audioPlayer.dispose();
+  }
+  @override
   void initState() {
     super.initState();
+
     audioPlayer.setSourceDeviceFile(
       widget.messageModel.message,
     );
@@ -343,3 +350,69 @@ class _OtherMessageWidgetState extends State<OtherMessageWidget> {
     );
   }
 }
+// import 'package:amir_chhat_app/model/message_model.dart';
+// import 'package:audioplayers/audioplayers.dart';
+// import 'package:flutter/material.dart';
+// import 'package:record/record.dart';
+//
+// class VoiceMessageWidget extends StatefulWidget {
+//    VoiceMessageWidget({Key? key, required this.messageModel, required this.audioPlayer, required this.record}) : super(key: key);
+//
+//   final MessageModel messageModel  ;
+//   final AudioPlayer audioPlayer ;
+//   final Record record;
+//
+//   @override
+//   State<VoiceMessageWidget> createState() => _VoiceMessageWidgetState();
+// }
+//
+// class _VoiceMessageWidgetState extends State<VoiceMessageWidget> {
+//
+//   Future<void> playRecording( ) async {
+//     try{
+//       Source urlSource= UrlSource(widget.messageModel.message);
+//       await widget.audioPlayer.play(urlSource);
+//
+//     } catch(e) {
+//       debugPrint("error  when record playing $e");
+//     }
+//   }
+//
+// Duration duration  =    Duration();
+//
+//   Future<Duration?> getDuration( ) async {
+//   duration =   (await widget.audioPlayer.getDuration())!;
+//   }
+//   @override
+//   initState( ) {
+//     super.initState();
+//     widget.onDurationChanged.listen((event) {
+//       setState(() {
+//         duration = event;
+//       });
+//     });
+//   }
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     getDuration();
+//     debugPrint(widget.messageModel.message);
+//     return Column(
+//       children: [
+//         Row(
+//           children: [
+//             Text(duration.inMicroseconds.toString()),
+//           ],
+//         ),
+//         GestureDetector(
+//           onTap: (  ) {
+//             playRecording() ;
+//             },
+//           child: Container(
+//             child: Text("Record"),
+//           ),
+//         ),
+//       ],
+//     );
+//   }
+// }

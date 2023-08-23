@@ -5,10 +5,9 @@ import 'package:amir_chhat_app/core/extension/size_extension.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-
+import 'package:record/record.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 
@@ -30,10 +29,20 @@ class ChatScreen extends StatefulWidget {
   State<ChatScreen> createState() => _ChatScreenState();
 }
 
-class _ChatScreenState extends State<ChatScreen> {
+class _ChatScreenState extends State<ChatScreen>  {
+
+
+late AudioPlayer audioPlayer ;
+late Record record  ;
+
+
+
   @override
   void initState() {
+    audioPlayer = AudioPlayer();
+    record = Record();
     super.initState();
+
     Future.delayed(Duration.zero, () async {
       Provider.of<ChatProvider>(context, listen: false).singleChatListener(
         widget.model.id,
@@ -43,9 +52,57 @@ class _ChatScreenState extends State<ChatScreen> {
       );
     });
   }
+  @override
+  void dispose() {
+audioPlayer.stop();
+record.stop();
+    super.dispose();
+  }
 
 
-  var audioPlayer = AudioPlayer();
+  bool isRecording  = false;
+
+  Future<void> startRecording( ) async {
+    try{
+      if(await record.hasPermission()) {
+        await record.start();
+        setState(() {
+           isRecording  = true;
+        });
+      }
+
+    } catch(e) {
+      debugPrint("error  when record starting $e");
+    }
+  }
+
+
+
+  String audioPath= "";
+  Future<void> stopRecording( ) async {
+    try{
+      String? path = await record.stop();
+      if(await record.hasPermission()) {
+        setState(() {
+           isRecording  = false;
+           audioPath = path!;
+           debugPrint("path is ${audioPath}");
+
+           if(audioPath.isNotEmpty) {
+             uploadRecord();
+           }
+        });
+      }
+
+    } catch(e) {
+      debugPrint("error  when record Stop $e");
+    }
+  }
+
+
+
+
+
   final TextEditingController messageController = TextEditingController();
 
   File? imageFile;
@@ -85,6 +142,35 @@ class _ChatScreenState extends State<ChatScreen> {
    }
     debugPrint(imageUrl);
   }
+
+  Future uploadRecord() async {
+    String fileName = const Uuid().v4();
+
+    var re =
+        FirebaseStorage.instance.ref().child('audios').child("$fileName.mpeg");
+
+    var upload = await re.putFile(File(audioPath)).catchError((error) {});
+
+
+    String audio = await upload.ref.getDownloadURL();
+
+   if(context.mounted
+    ){
+     Provider.of<ChatProvider>(context,listen: false).sendMessage(
+         MessageModel(message: audio,
+           date: DateTime.now().toIso8601String(),
+           image: widget.model.image,
+           name: widget.model.name,
+           unReadCount: 0,
+           type: MessageType.audio,
+           id: widget.model.id,
+         ));
+   }
+  }
+
+
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -148,6 +234,8 @@ class _ChatScreenState extends State<ChatScreen> {
                             itemBuilder: (ctx, index) =>
 
                                 TextMessageWidget(
+                                  record: record,
+                                  audioPlayer: audioPlayer,
                               model: provider.messagesMap[widget.model.id]![
                                   provider.messagesMap[widget.model.id]!
                                           .length -
@@ -187,16 +275,15 @@ class _ChatScreenState extends State<ChatScreen> {
                         width: 12,
                       ),
                       GestureDetector(
-                          onLongPress: () async {
-
-
-                          },
+                          onLongPress:startRecording,
                           onLongPressEnd: (details) {
-                            // stopRecord();
-
-                            // audioPlayer.star;
+                           stopRecording();
                           },
-                          child: const Icon(Icons.mic)),
+                          child:  Icon(Icons.mic,
+
+                          color: isRecording ? Colors.blue: Colors.black ,
+                            size: isRecording ? 40: 30,
+                          )),
                       const SizedBox(
                         width: 12,
                       ),
@@ -235,7 +322,7 @@ class _ChatScreenState extends State<ChatScreen> {
                               hintStyle: const TextStyle(
                                 fontSize: 12,
                               ),
-                              hintText: "Write a message",
+                              hintText: isRecording? "Recording...": "Write a message",
                               contentPadding: const EdgeInsets.all(10),
                               border: InputBorder.none,
                             ),

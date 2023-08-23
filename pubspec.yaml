@@ -44,6 +44,7 @@ dependencies:
   emoji_picker_flutter: ^1.6.1
   audioplayers: ^5.1.0
   path_provider: ^2.1.0
+  record: ^4.4.4
   uuid: ^3.0.7
 
 

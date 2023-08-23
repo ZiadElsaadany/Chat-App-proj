@@ -1,8 +1,9 @@
 import 'package:amir_chhat_app/core/extension/size_extension.dart';
 import 'package:amir_chhat_app/ui/screens/chat/widgets/voice_message_widget.dart';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:record/record.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../model/message_model.dart';
@@ -11,9 +12,11 @@ import '../show_image_screen.dart';
 
 class MyMessageItemWidget extends StatelessWidget {
   const MyMessageItemWidget({
-    Key? key, required this.model,
+    Key? key, required this.model, required this.audioPlayer, required this.record,
   }) : super(key: key);
 final MessageModel model;
+final AudioPlayer audioPlayer;
+final Record record; 
   @override
   Widget build(BuildContext context) {
     return Align(
@@ -58,7 +61,7 @@ final MessageModel model;
           ),
         )
             :  model.type ==MessageType.audio?
-        VoiceMessageWidget(messageModel: model,)
+        VoiceMessageWidget(messageModel: model)
             : Container(
           padding: EdgeInsets.all(10),
           decoration: BoxDecoration (
