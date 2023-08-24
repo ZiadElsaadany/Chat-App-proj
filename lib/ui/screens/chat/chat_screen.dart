@@ -21,9 +21,10 @@ import 'widgets/text_message_widget.dart';
 class ChatScreen extends StatefulWidget {
   const ChatScreen({
     Key? key,
-    required this.model,
+    required this.model, required this.id,
   }) : super(key: key);
   final MessageModel model;
+  final String id  ;
 
   @override
   State<ChatScreen> createState() => _ChatScreenState();
@@ -154,8 +155,7 @@ record.stop();
 
     String audio = await upload.ref.getDownloadURL();
 
-   if(context.mounted
-    ){
+   if(context.mounted){
      Provider.of<ChatProvider>(context,listen: false).sendMessage(
          MessageModel(message: audio,
            date: DateTime.now().toIso8601String(),
@@ -191,9 +191,9 @@ record.stop();
             provider.changeChatEmojiPicker(false);
           },
           child: Scaffold(
-            backgroundColor: const Color.fromARGB(255, 234, 248, 255),
+            backgroundColor:AppColors.whiteColor,
             appBar: AppBar(
-              backgroundColor: AppColors.whiteColor,
+              backgroundColor:Colors.transparent,
               elevation: 0,
               leading: IconButton(
                 onPressed: () async {
@@ -222,85 +222,68 @@ record.stop();
             body: Column(
               children: [
                 Expanded(
-                  child: provider.messagesMap[widget.model.id] != null &&
-                          provider.messagesMap[widget.model.id]!.isNotEmpty
-                      ? Padding(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 15,
-                            vertical: 10,
-                          ),
-                          child: ListView.separated(
-                            reverse: true,
-                            itemBuilder: (ctx, index) =>
-
-                                TextMessageWidget(
-                                  record: record,
-                                  audioPlayer: audioPlayer,
-                              model: provider.messagesMap[widget.model.id]![
-                                  provider.messagesMap[widget.model.id]!
-                                          .length -
-                                      1 -
-                                      index],
-                            ),
-                            separatorBuilder: (ctx, index) => const SizedBox(
-                              height: 12,
-                            ),
-                            itemCount:
-                                provider.messagesMap[widget.model.id]!.length,
-                          ),
-                        )
-                      : Center(
+                  child: provider.messagesMap[widget.model.id]== null ||
+                          provider.messagesMap[widget.model.id]!.isEmpty
+                      ?
+                      Center(
                           child: provider.getMessagesLoading
                               ? const LoadingWidget()
                               : const EmptyWidget(),
-                        ),
+                        ): Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 15,
+                      vertical: 10,
+                    ),
+                    child: ListView.separated(
+                      reverse: true,
+                      itemBuilder: (ctx, index) =>
+
+                          TextMessageWidget(
+                            record: record,
+                            audioPlayer: audioPlayer,
+                            model: provider.messagesMap[widget.model.id]![
+                            provider.messagesMap[widget.model.id]!
+                                .length -
+                                1 -
+                                index],
+                          ),
+                      separatorBuilder: (ctx, index) => const SizedBox(
+                        height: 12,
+                      ),
+                      itemCount:
+                      provider.messagesMap[widget.model.id]!.length,
+                    ),
+                  ),
                 ),
                 Container(
                   height: 9.appHeight(context),
-                  color: AppColors.greyColor1,
+                  color: AppColors.whiteColor,
                   alignment: Alignment.center,
                   child: Row(
                     children: [
                       const SizedBox(
                         width: 15,
                       ),
-                      GestureDetector(
-                      onTap: ( ){
-                        provider
-                            .changeChatEmojiPicker(!provider.chatEmoji);
-                        FocusScope.of(context).unfocus();
-                      }
-                      ,child: const Icon(Icons.emoji_emotions_outlined)),
-                      const SizedBox(
-                        width: 12,
-                      ),
-                      GestureDetector(
-                          onLongPress:startRecording,
-                          onLongPressEnd: (details) {
-                           stopRecording();
-                          },
-                          child:  Icon(Icons.mic,
 
-                          color: isRecording ? Colors.blue: Colors.black ,
-                            size: isRecording ? 40: 30,
-                          )),
-                      const SizedBox(
-                        width: 12,
-                      ),
+
                       Expanded(
                         child: Container(
+
                           height: 6.appHeight(context),
                           alignment: Alignment.center,
                           clipBehavior: Clip.antiAlias,
                           decoration: BoxDecoration(
                             color: AppColors.whiteColor,
-                            borderRadius: BorderRadius.circular(15),
+                            borderRadius: BorderRadius.circular(100),
                           ),
                           padding: const EdgeInsets.only(
                             left: 6,
                             right: 6,
                           ),
                           child: TextField(
+                            onChanged: ( v ) {
+                              setState(() {});
+                            } ,
                             maxLines: 5,
                             minLines: 1,
                             onTap: () {
@@ -313,15 +296,30 @@ record.stop();
                             ),
                             scrollPadding: const EdgeInsets.all(0),
                             decoration: InputDecoration(
+                              fillColor: AppColors.greyColor1,
+                              filled: true,
+
                               suffixIcon: IconButton(
                                 onPressed: () {
                                   getImage();
                                 },
-                                icon: const Icon(Icons.photo),
+                                icon: const Icon(Icons.photo,
+                                color: AppColors.blackColor,
+                                ),
                               ),
                               hintStyle: const TextStyle(
                                 fontSize: 12,
                               ),
+                              prefixIcon:  GestureDetector(
+                                  onTap: ( ){
+                                    provider
+                                        .changeChatEmojiPicker(!provider.chatEmoji);
+                                    FocusScope.of(context).unfocus();
+                                  }
+                                  ,child: const Icon(Icons.emoji_emotions_outlined,
+                                color: AppColors.blackColor,
+
+                              )),
                               hintText: isRecording? "Recording...": "Write a message",
                               contentPadding: const EdgeInsets.all(10),
                               border: InputBorder.none,
@@ -329,36 +327,69 @@ record.stop();
                           ),
                         ),
                       ),
+                      messageController.text.isEmpty? Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 15.0),
+                        child: GestureDetector(
+      onLongPress:startRecording,
+      onLongPressEnd: (details) {
+      stopRecording();
+      },
+      child:  Icon(Icons.mic,
+
+      color: isRecording ? AppColors.yellowColor1: Colors.black ,
+      size: isRecording ? 40: 30,
+      )),
+                      )  :
+
                       TextButton(
-                        style: ButtonStyle(
+                        style:
+
+
+                        ButtonStyle(
                           overlayColor: MaterialStateProperty.all(
                             Colors.transparent,
                           ),
                         ),
                         onPressed: ()  {
-                          if (messageController.text.isNotEmpty) {
-                             provider
-                                .sendMessage(
-                              MessageModel(
-                                message: messageController.text,
-                                date: DateTime.now().toIso8601String(),
-                                image: widget.model.image,
-                                name: widget.model.name,
-                                unReadCount: 0,
-                                type: MessageType.text,
-                                id: widget.model.id,
-                              ),
-                            )
-                                .then((value) {
-                                  messageController.clear();
-                              FocusScope.of(context).unfocus();
-                              provider.changeChatEmojiPicker(false);
-                            });
+                            if (messageController.text.isNotEmpty) {
+                              provider
+                                  .sendMessage(
+                                MessageModel(
+                                  message: messageController.text,
+                                  date: DateTime.now().toIso8601String(),
+                                  image: widget.model.image,
+                                  name: widget.model.name,
+                                  unReadCount: 0,
+                                  type: MessageType.text,
+                                  id: widget.model.id,
+                                ),
+                              )
+                                  .then((value) {
+                                messageController.clear();
+                                FocusScope.of(context).unfocus();
+                                provider.changeChatEmojiPicker(false);
+                              });
+                          if(provider.sendMessageLoading)  {
+                          provider.messagesMap.addAll({
+                       //
+                       // widget.id:
+                       //    provider.MessageModel(
+                       //    message: messageController.text,
+                       //    date: DateTime.now().toIso8601String(),
+                       //    image: widget.model.image,
+                       //    name: widget.model.name,
+                       //    unReadCount: 0,
+                       //    type: MessageType.text,
+                       //    id: widget.model.id,
+                       //    ),
+
+                          });
                           }
-                        },
-                        child: const Icon(
+                            }
+                          },child: const Icon(
                           Icons.send,
-                          color: AppColors.blueColor1,
+                          color: AppColors.yellowColor1,
                         ),
                       ),
                     ],

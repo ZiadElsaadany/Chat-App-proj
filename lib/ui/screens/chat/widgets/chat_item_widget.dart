@@ -11,9 +11,10 @@ import '../chat_screen.dart';
 class ChatItemWidget extends StatelessWidget {
   const ChatItemWidget({
     Key? key,
-    required this.model,
+    required this.model, required this.chatId,
   }) : super(key: key);
   final MessageModel model;
+  final String chatId;
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +25,7 @@ class ChatItemWidget extends StatelessWidget {
       onTap: () {
         context.push(
           ChatScreen(
-            model: model,
+            model: model, id: chatId,
           ),
         );
       },

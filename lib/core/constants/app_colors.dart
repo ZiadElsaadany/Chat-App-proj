@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 
 class AppColors {
-  static const Color blueColor1 = Color(0xff3fabf4);
-  static const Color blueColor2 = Color(0xff3aced4);
+  static const Color yellowColor1 = Color(0xfffece00);
+  static const Color yellowColor2 = Color(0xffc76406);
+  static const Color yellowColor3 = Color(0xff932202);
   static const Color greyColor1 = Color(0xffeaeaea);
   static const Color greyColor2 = Colors.grey;
   static const Color whiteColor = Colors.white;
@@ -18,16 +19,19 @@ class AppColors {
 
   static const mainGradient = LinearGradient(
     colors: [
-      blueColor1,
-      blueColor2,
+      yellowColor1,
+      yellowColor2,
+yellowColor3
+
+
     ],
     begin: Alignment.centerLeft,
     end: Alignment.centerRight,
   );
   static final secondGradient = LinearGradient(
     colors: [
-      blueColor1.withOpacity(0.8),
-      blueColor2.withOpacity(0.6),
+      yellowColor1.withOpacity(0.8),
+      yellowColor2.withOpacity(0.6),
     ],
     begin: Alignment.topCenter,
     end: Alignment.bottomCenter,

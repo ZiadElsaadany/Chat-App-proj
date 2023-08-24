@@ -63,7 +63,7 @@ final Record record;
             :  model.type ==MessageType.audio?
         VoiceMessageWidget(messageModel: model)
             : Container(
-          padding: EdgeInsets.all(10),
+          padding: const EdgeInsets.all(10),
           decoration: BoxDecoration (
             borderRadius: BorderRadiusDirectional.only(
                 bottomEnd:   Radius.circular(12),
@@ -71,13 +71,13 @@ final Record record;
               topEnd:  Radius.circular(0) ,
                topStart:Radius.circular(15)
             ),
-            color: AppColors.blueColor1
+            gradient: AppColors.mainGradient
           ),
               child: Text(
           model.message,
           style:const TextStyle(
               color: AppColors.whiteColor,
-              fontSize: 12,
+              fontSize: 16,
               fontWeight: FontWeight.w600,
           ),
         ),

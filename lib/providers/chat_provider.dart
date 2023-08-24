@@ -90,7 +90,11 @@ class ChatProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+
+  bool sendMessageLoading = false;
   Future<void> sendMessage(MessageModel model) async {
+    sendMessageLoading = true;
+    notifyListeners();
     try {
       final UserModel userModel = UserModel.fromJson(AppHelper.getUserModel());
 
@@ -201,9 +205,19 @@ class ChatProvider extends ChangeNotifier {
           AppConstants.chatsCollection: receiverChats,
         },
       );
+      sendMessageLoading = false;
+
+      notifyListeners();
+
     } on SocketException {
-    } catch (e) {}
-    notifyListeners();
+      sendMessageLoading = false;
+
+      notifyListeners();
+    } catch (e) {
+      sendMessageLoading = false;
+
+      notifyListeners();
+    }
   }
 
   Future<void> resetUnReadCount(String id) async {

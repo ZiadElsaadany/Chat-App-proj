@@ -1,5 +1,7 @@
+import 'package:amir_chhat_app/providers/chat_provider.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:record/record.dart';
 
 import '../../../../core/helper/app_helper.dart';
@@ -18,16 +20,23 @@ class TextMessageWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return model.id == AppHelper.getUserId()
-        ? MyMessageItemWidget(
-      record: record,
-      audioPlayer: audioPlayer,
+    return
 
-            model: model,
-          )
-        : OtherMessageItemWidget(
-            model: model,
-          );
+
+
+
+
+
+model.id == AppHelper.getUserId()
+    ? MyMessageItemWidget(
+  record: record,
+  audioPlayer: audioPlayer,
+
+  model: model,
+)
+    : OtherMessageItemWidget(
+  model: model,
+);
   }
 }
 

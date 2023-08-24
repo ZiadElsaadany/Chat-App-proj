@@ -27,7 +27,7 @@ class ChatTopBarWidget extends StatelessWidget {
               child: Text(
                 "Inbox",
                 style: const TextStyle(
-                  color: AppColors.blueColor1,
+                  color: AppColors.yellowColor1,
                   fontWeight: FontWeight.bold,
                   fontSize: 16,
                 ),

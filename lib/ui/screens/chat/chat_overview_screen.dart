@@ -84,6 +84,7 @@ class _ChatOverviewScreenState extends State<ChatOverviewScreen> {
                           vertical: 12,
                         ),
                         itemBuilder: (ctx, index) => ChatItemWidget(
+                          chatId:provider.chatsList[index].id ,
                           model: provider.chatsList[index],
                         ),
                         separatorBuilder: (ctx, index) => const Divider(),

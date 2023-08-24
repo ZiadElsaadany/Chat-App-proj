@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../constants/app_colors.dart';
 
 class LoadingWidget extends StatelessWidget {
-  const LoadingWidget({Key? key, this.color = AppColors.blueColor1})
+  const LoadingWidget({Key? key, this.color = AppColors.yellowColor1})
       : super(key: key);
   final Color color;
 

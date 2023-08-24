@@ -1,6 +1,7 @@
 
 import 'package:amir_chhat_app/core/extension/size_extension.dart';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../../core/constants/app_colors.dart';
@@ -111,70 +112,74 @@ class _MyMessageWidgetState extends State<MyMessageWidget> {
                   ),
                   gradient: LinearGradient(
                     colors: [
-                      AppColors.blueColor1,
-                      AppColors.blueColor2,
+                      AppColors.yellowColor1,
+                      AppColors.yellowColor2,
                     ],
                   ),
                 ),
-                child: Column(
-                  children: [
-                    Row(
-                      children: [
-                        InkWell(
-                          onTap: () async {
-                            if (isPlaying) {
-                              await audioPlayer.pause();
-                            } else {
-                              await audioPlayer.play(
-                                DeviceFileSource(
-                                  widget.messageModel.message,
-                                ),
-                              );
-                            }
-                          },
-                          child: Icon(
-                            isPlaying ? Icons.pause : Icons.play_arrow,
-                            color: AppColors.greyColor1,
-                            size: 30,
+                child: Expanded(
+                  child: Column(
+                    children: [
+                      Row(
+                        children: [
+                          InkWell(
+                            onTap: () async {
+                              if (isPlaying) {
+                                await audioPlayer.pause();
+                              } else {
+                                await audioPlayer.play(
+                                  DeviceFileSource(
+                                    widget.messageModel.message,
+                                  ),
+                                );
+                              }
+                            },
+                            child: Icon(
+                              isPlaying ? Icons.pause : Icons.play_arrow,
+                              color: AppColors.whiteColor,
+                              size: 30,
+
+                            ),
                           ),
-                        ),
-                        Expanded(
-                          child: SliderTheme(
-                            data: SliderThemeData(
-                              overlayShape: SliderComponentShape.noThumb,
-                              thumbShape: const RoundSliderThumbShape(
-                                enabledThumbRadius: 6,
+                          Expanded(
+                            child: SliderTheme(
+                              data: SliderThemeData(
+
+                                overlayShape: SliderComponentShape.noThumb,
+                                thumbShape: const RoundSliderThumbShape(
+                                  enabledThumbRadius: 6,
+                                ),
+                              ),
+                              child: Slider(
+                                value: position.inSeconds.toDouble(),
+                                min: 0.0,
+                                max: duration.inSeconds.toDouble(),
+                                onChanged: (value) async {
+                                  final p = Duration(seconds: value.toInt());
+                                  await audioPlayer.seek(p);
+                                },
+                                activeColor: AppColors.yellowColor1,
+                                inactiveColor: Colors.white,
                               ),
                             ),
-                            child: Slider(
-                              value: position.inSeconds.toDouble(),
-                              min: 0.0,
-                              max: duration.inSeconds.toDouble(),
-                              onChanged: (value) async {
-                                final p = Duration(seconds: value.toInt());
-                                await audioPlayer.seek(p);
-                              },
-                              activeColor: AppColors.blueColor1,
-                              inactiveColor: Colors.white70,
+                          ),
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Text(
+                            '$twoDigitsMin:$twoDigitsSec',
+                            style: const TextStyle(
+                              color: AppColors.greyColor1,
+                              fontSize: 10,
+                              fontWeight: FontWeight.w500,
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Text(
-                          '$twoDigitsMin:$twoDigitsSec',
-                          style: const TextStyle(
-                            color: AppColors.greyColor1,
-                            fontSize: 10,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ],
-                    )
-                  ],
+                        ],
+                      )
+                    ],
+                  ),
                 ),
               ),
               const SizedBox(
@@ -293,7 +298,7 @@ class _OtherMessageWidgetState extends State<OtherMessageWidget> {
                               final position = Duration(seconds: value.toInt());
                               await audioPlayer.seek(position);
                             },
-                            activeColor: AppColors.blueColor1,
+                            activeColor: AppColors.yellowColor1,
                             inactiveColor: Colors.white70,
                           ),
                         ),
@@ -312,7 +317,7 @@ class _OtherMessageWidgetState extends State<OtherMessageWidget> {
                         },
                         child: Icon(
                           isPlaying ? Icons.pause : Icons.play_arrow,
-                          color: AppColors.blueColor1,
+                          color: AppColors.yellowColor1,
                           size: 30,
                         ),
                       ),
