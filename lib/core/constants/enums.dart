@@ -4,3 +4,13 @@ enum States   {
   loaded,
   failure
 }
+
+enum SelectedOrNot {
+  selected,
+  not
+}
+
+enum Gender{
+  male,
+   female
+}

@@ -1,6 +1,8 @@
 import 'package:amir_chhat_app/providers/chat_provider.dart';
+import 'package:amir_chhat_app/providers/completeAuth/complete_auth_providers.dart';
 import 'package:amir_chhat_app/providers/notification_provider.dart';
 import 'package:amir_chhat_app/ui/screens/chat/chat_overview_screen.dart';
+import 'package:amir_chhat_app/ui/screens/complete_auth/basic_complete_auth_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
@@ -36,5 +38,8 @@ void main() async {
     ChangeNotifierProvider.value(
       value: NotificationProvider(),
     ),
-  ], child: const MaterialApp(home: ChatOverviewScreen())));
+    ChangeNotifierProvider.value(
+      value: CompleteAuthProvider(),
+    ),
+  ], child: const MaterialApp(home: BaseCompleteAuthScreen())));
 }

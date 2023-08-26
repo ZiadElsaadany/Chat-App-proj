@@ -45,6 +45,8 @@ dependencies:
   audioplayers: ^5.1.0
   path_provider: ^2.1.0
   record: ^4.4.4
+  animated_text_kit: ^4.2.2
+  country_picker: ^2.0.20
   uuid: ^3.0.7
 
 
